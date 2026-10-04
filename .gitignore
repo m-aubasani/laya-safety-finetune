@@ -8,3 +8,10 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Pipeline artifacts (large / regenerable)
+data/processed/
+data/raw/examples.jsonl
+*.pt
+uv.lock
+README.md

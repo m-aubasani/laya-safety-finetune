@@ -1,0 +1,40 @@
+backbone: answerdotai/ModernBERT-large
+max_len: 512
+head_max_len: 192
+instr_max_len: 64
+max_options: 20
+group_size_G: 8
+sigma_start: 1.0
+sigma_end: 0.3
+lr_backbone: 2.0e-5
+lr_heads: 1.0e-4
+weight_decay: 0.01
+warmup_ratio: 0.06
+grad_clip: 1.0
+batch_states: 16
+micro_batch: 4
+epochs: 1
+precision: fp16
+attn_implementation: sdpa
+grad_checkpointing: true
+seed: 42
+
+# Hard rule 1: human-source whitelist. Anything else (llm/synthetic/distilled) is rejected.
+human_sources:
+  - human
+  - internal_support_v3
+  - ag_news
+  - dair_emotion
+  - toxicchat
+  - massive
+  - banking77_coarse
+  - clinc150_coarse
+
+gate:
+  R_ACT_OK: 1.0
+  R_ACT_BAD: -3.0
+  R_ESC: -0.5
+
+# Local hardware adaptation (plan assumed dual T4 16GB; auto-detected at runtime too).
+# RTX 3060 6GB here: use micro_batch 2-4, grad accumulation, fp16 + GradScaler.
+device_note: "plan-target: dual T4 16GB DDP via accelerate/torchrun; local dev: single GPU fp16"
